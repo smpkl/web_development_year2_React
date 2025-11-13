@@ -2,12 +2,7 @@ html {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-table {
-  border: 2px solid black;
-  border-collapse: collapse;
-}
-
-table th,
-table td {
-  border: 2px solid black;
+img,
+video {
+  width: 50%;
 }

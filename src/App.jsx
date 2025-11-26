@@ -9,7 +9,7 @@ import Upload from './views/Upload';
 function App() {
   return (
     <>
-      <BrowserRouter basename="/~sampokl/hooks/">
+      <BrowserRouter basename="/~sampokl/custom-hooks/">
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

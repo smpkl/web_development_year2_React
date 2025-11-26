@@ -1,4 +1,4 @@
 # React web project
 
-Lab assignment 1 published to [Metropolia server](https://users.metropolia.fi/~sampokl/wsk-routing/). <br/>
-Lab assignment 2 published to [Metropolia server](https://users.metropolia.fi/~sampokl/routing/).
+Hooks - Lab assignment 1 published to [users.metropolia.fi](https://users.metropolia.fi/~sampokl/hooks/). <br/>
+Hooks - Lab assignment 2 published to [users.metropolia.fi](https://users.metropolia.fi/~sampokl/hooks/).

@@ -1,3 +1,3 @@
 # React web project
 
-Published to [Metropolia server](https://users.metropolia.fi/~sampokl/wsk-routing/).
+Routing - Published to [users.metropolia.fi](https://users.metropolia.fi/~sampokl/wsk-routing/).

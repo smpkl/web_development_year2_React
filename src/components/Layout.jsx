@@ -17,6 +17,7 @@ const Layout = () => {
               <Link to="/upload">Upload</Link>
             </li>
           </ul>
+          <Link to="/login">Login</Link>
         </nav>
         <main>
           <Outlet />

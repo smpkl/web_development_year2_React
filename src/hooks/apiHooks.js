@@ -86,7 +86,9 @@ const useUser = () => {
       const options = {
         method: 'POST',
         body: JSON.stringify(body),
-        'Content-Type': 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       };
       const response = await fetchData(
         import.meta.env.VITE_AUTH_API + '/users',

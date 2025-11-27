@@ -1,4 +1,5 @@
 import {useUser} from '../hooks/apiHooks';
+import {useUserContext} from '../hooks/contextHooks';
 import useForm from '../hooks/formHooks';
 import {useNavigate} from 'react-router';
 
@@ -8,11 +9,9 @@ const RegisterForm = () => {
     email: '',
     password: '',
   };
-
   const {postUser} = useUser();
-
+  const {handleLogin} = useUserContext();
   const navigate = useNavigate();
-
   const {inputs, handleInputChange, handleSubmit} = useForm(
     doRegister,
     initValues,
@@ -21,8 +20,18 @@ const RegisterForm = () => {
   async function doRegister() {
     console.log(inputs);
 
-    postUser(inputs);
-    navigate('/');
+    const response = await postUser(inputs);
+    if (response.ok) {
+      const credentials = {
+        username: inputs.username,
+        password: inputs.password,
+      };
+      handleLogin(credentials).then(() => {
+        navigate('/');
+      });
+    } else {
+      alert(response.body.message);
+    }
   }
 
   return (

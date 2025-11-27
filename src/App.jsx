@@ -12,7 +12,7 @@ import {UserProvider} from './contexts/UserContext';
 function App() {
   return (
     <>
-      <BrowserRouter basename="/~sampokl/forms/">
+      <BrowserRouter>
         <UserProvider>
           <Routes>
             <Route path="/" element={<Layout />}>

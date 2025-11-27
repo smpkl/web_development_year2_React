@@ -6,6 +6,7 @@ const Layout = () => {
   const {user, handleAutoLogin} = useUserContext();
 
   useEffect(() => {
+    console.log('user', user);
     handleAutoLogin();
   }, []);
 

@@ -2,7 +2,7 @@ import {createContext, useState} from 'react';
 import {useAuthentication, useUser} from '../hooks/apiHooks';
 import {useNavigate} from 'react-router';
 
-const UserContext = createContext(null);
+const UserContext = createContext(undefined);
 
 const UserProvider = ({children}) => {
   const [user, setUser] = useState(null);
@@ -15,7 +15,15 @@ const UserProvider = ({children}) => {
     try {
       // post login credentials to API
       console.log('log in:', credentials);
-      const {user, token} = await postLogin(credentials);
+      const response = await postLogin(credentials);
+
+      if (!response.ok) {
+        console.log('Login failed:', response.status);
+        alert(response.body.message);
+        return;
+      }
+      console.log('response:', response);
+      const {user, token} = response.body;
 
       // TODO: set token to local storage
       if (token) {
@@ -72,6 +80,13 @@ const UserProvider = ({children}) => {
     }
   };
 
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  const value = {
+    user,
+    handleLogin,
+    handleLogout,
+    handleAutoLogin,
+  };
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 export {UserProvider, UserContext};

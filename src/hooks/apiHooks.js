@@ -40,13 +40,18 @@ const useAuthentication = () => {
         },
         body: JSON.stringify(inputs),
       };
-      const loginResult = await fetchData(
+      const response = await fetch(
         import.meta.env.VITE_AUTH_API + '/auth/login',
         fetchOptions,
       );
 
-      console.log('login result:', loginResult);
-      return loginResult;
+      const {ok, status} = response;
+      const result = {
+        ok,
+        status,
+        body: await response.json(),
+      };
+      return result;
     } catch (error) {
       console.log(error);
       return false;
@@ -90,14 +95,17 @@ const useUser = () => {
           'Content-Type': 'application/json',
         },
       };
-      const response = await fetchData(
+      let response = await fetch(
         import.meta.env.VITE_AUTH_API + '/users',
         options,
       );
-      if (!response.ok) {
-        return false;
-      }
-      console.log(response);
+      const {ok, status} = response;
+      const result = {
+        ok,
+        status,
+        body: await response.json(),
+      };
+      return result;
     } catch (error) {
       console.log(error);
     }

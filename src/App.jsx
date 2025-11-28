@@ -13,7 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename="~sampokl/upload/">
         <UserProvider>
           <Routes>
             <Route path="/" element={<Layout />}>

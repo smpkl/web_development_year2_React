@@ -9,7 +9,6 @@ const Profile = () => {
   useEffect(() => {
     getUserByToken(localStorage.getItem('token')).then((resultUser) => {
       setUser(resultUser);
-      console.log(resultUser);
     });
   }, []);
   return (

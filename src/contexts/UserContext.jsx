@@ -1,6 +1,6 @@
 import {createContext, useState} from 'react';
 import {useAuthentication, useUser} from '../hooks/apiHooks';
-import {useNavigate} from 'react-router';
+import {useNavigate, useLocation} from 'react-router';
 
 const UserContext = createContext(undefined);
 
@@ -9,6 +9,7 @@ const UserProvider = ({children}) => {
   const {postLogin} = useAuthentication();
   const {getUserByToken} = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // login, logout and autologin functions are here instead of components
   const handleLogin = async (credentials) => {
@@ -25,16 +26,16 @@ const UserProvider = ({children}) => {
       console.log('response:', response);
       const {user, token} = response.body;
 
-      // TODO: set token to local storage
+      // set token to local storage
       if (token) {
         localStorage.setItem('token', token);
       } else {
         console.log('Login failed: no token received');
         return false;
       }
-      // TODO: set user to state
+      // set user to state
       setUser(user);
-      // TODO: navigate to home
+      // navigate to home
       navigate('/');
     } catch (e) {
       console.log(e.message);
@@ -62,7 +63,7 @@ const UserProvider = ({children}) => {
   // handleAutoLogin is used when the app is loaded to check if there is a valid token in local storage
   const handleAutoLogin = async () => {
     try {
-      console.log('autologin');
+      console.log('try autologin');
       // get token from local storage
       const token = localStorage.getItem('token');
       // if token exists, get user data from API
@@ -71,7 +72,7 @@ const UserProvider = ({children}) => {
         // set user to state
         setUser(result);
         // navigate to home
-        navigate('/');
+        navigate(location.pathname);
       } else {
         console.log('Unable to autologin: no token found');
       }

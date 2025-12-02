@@ -41,9 +41,19 @@ const Layout = () => {
             </li>
           </ul>
           {user ? (
-            <Link to="/logout">Log out</Link>
+            <Link
+              to="/logout"
+              className="my-auto px-3! py-2! border-2 border-transparent hover:border-fuchsia-300 hover:rounded-xl! hover:no-underline!"
+            >
+              Log out
+            </Link>
           ) : (
-            <Link to="/login">Login</Link>
+            <Link
+              to="/login"
+              className="my-auto px-3! py-2! border-2 border-transparent hover:border-fuchsia-300 hover:rounded-xl! hover:no-underline!"
+            >
+              Login
+            </Link>
           )}
         </nav>
         <main>

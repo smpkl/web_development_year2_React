@@ -13,7 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename="/~sampokl/tailwind/">
         <UserProvider>
           <Routes>
             <Route path="/" element={<Layout />}>
@@ -27,7 +27,14 @@ function App() {
                 }
               />
               <Route path="single" element={<Single />} />
-              <Route path="upload" element={<Upload />} />
+              <Route
+                path="upload"
+                element={
+                  <ProtectedRoute>
+                    <Upload />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="login" element={<Login />} />
               <Route path="logout" element={<Logout />} />
             </Route>

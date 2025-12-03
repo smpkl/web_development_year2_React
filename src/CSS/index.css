@@ -9,7 +9,6 @@
   }
 }
 @tailwind utilities;
-
 @theme {
-  --primary: #9236a4;
+  --color-primary: #9236a4;
 }

@@ -8,7 +8,7 @@ const useMedia = () => {
     try {
       const temp = await fetchData(import.meta.env.VITE_MEDIA_API + '/media');
 
-      Promise.all(
+      await Promise.all(
         temp.map(async (item) => {
           const result = await fetchData(
             `${import.meta.env.VITE_AUTH_API}/users/${item.user_id}`,
@@ -23,11 +23,36 @@ const useMedia = () => {
     }
   }
 
-  React.useEffect(() => {
-    getMedia();
-  }, []);
+  /**
+   * Delete a post.
+   *
+   * @param {JWTToken} token JWTToken of user
+   * @param {string} id Id of post
+   */
+  async function deleteMedia(token, id) {
+    try {
+      const options = {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await fetchData(
+        import.meta.env.VITE_MEDIA_API + '/media/' + id,
+        options,
+      );
 
-  return {mediaArray};
+      console.log(response);
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  }
+
+  // React.useEffect(() => {
+  //  getMedia();
+  // }, []);
+
+  return {mediaArray, getMedia, deleteMedia};
 };
 
 const useAuthentication = () => {

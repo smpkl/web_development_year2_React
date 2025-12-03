@@ -1,13 +1,16 @@
 import {Link} from 'react-router';
 import {useUserContext} from '../hooks/contextHooks';
+import {useMedia} from '../hooks/apiHooks';
 
 const MediaRow = (props) => {
-  const {item} = props;
+  const {item, removeItem} = props;
   const {user} = useUserContext();
+
+  const {deleteMedia} = useMedia();
 
   return (
     <>
-      <tr className="max-h-34 *:px-2!">
+      <tr className="max-h-34 *:px-2!" id={item.media_id}>
         <td>
           <div>
             <img
@@ -39,25 +42,31 @@ const MediaRow = (props) => {
         </td>
         <td>
           <div className="max-h-34 flex flex-col gap-1 items-center justify-between">
-            <Link
-              className="w-20! text-center no-underline! rounded-xl! px-3! py-1! border-2 border-transparent hover:border-fuchsia-300 hover:rounded-xl! hover:no-underline!"
-              to="/single"
-              state={{item: item}}
-            >
-              Select
+            <Link to="/single" state={{item: item}}>
+              <button className="w-20! no-underline! px-3! py-1! border-2 rounded-xl! border-transparent hover:rounded-xl! hover:no-underline!">
+                Select
+              </button>
             </Link>
-            {item.username === user.username || user.level_name === 'Admin' ? (
+            {item?.username === user?.username ||
+            user?.level_name === 'Admin' ? (
               <button
-                onClick={console.log('Delete', this)}
+                onClick={() => {
+                  console.log('Delete', item);
+                  deleteMedia(localStorage.getItem('token'), item.media_id);
+                  removeItem(item.media_id);
+                }}
                 className="w-20! text-black! bg-red-600! rounded-xl! border-red-600! no-underline! px-3! py-1! border-4 hover:border-red-500! hover:text-red-500! hover:bg-transparent! hover:rounded-xl! hover:no-underline!"
               >
                 Delete
               </button>
             ) : null}
-            {item.username === user.username || user.level_name === 'Admin' ? (
+            {item?.username === user?.username ||
+            user?.level_name === 'Admin' ? (
               <button
-                onClick={console.log('Modify', this)}
-                className="no-underline! px-3! py-1! border-2 rounded-xl! border-transparent hover:border-fuchsia-300 hover:rounded-xl! hover:no-underline!"
+                onClick={() => {
+                  console.log('Modify');
+                }}
+                className="w-20! no-underline! px-3! py-1! border-2 rounded-xl! border-transparent hover:rounded-xl! hover:no-underline!"
               >
                 Modify
               </button>

@@ -2,10 +2,11 @@ import {useEffect, useState} from 'react';
 import MediaRow from '../components/MediaRow';
 import Single from './Single';
 import {useMedia} from '../hooks/apiHooks';
+import {useUserContext} from '../hooks/contextHooks';
 
 const Home = () => {
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const {likes} = useUserContext();
   const {mediaArray, getMedia} = useMedia();
 
   useEffect(() => {
@@ -42,13 +43,21 @@ const Home = () => {
           </tr>
         </thead>
         <tbody>
-          {mediaArray.map((item) => (
-            <MediaRow
-              key={`${item.media_id}-modal`}
-              item={item}
-              removeItem={removeItem}
-            />
-          ))}
+          {mediaArray.map((item) => {
+            if (likes === null) {
+              return;
+            }
+            const like = likes?.find((l) => l.media_id === item.media_id);
+
+            return (
+              <MediaRow
+                key={`${item.media_id}-modal`}
+                item={item}
+                like={like ?? null}
+                removeItem={removeItem}
+              />
+            );
+          })}
         </tbody>
       </table>
     </>

@@ -162,4 +162,113 @@ const useUser = () => {
   return {getUserByToken, postUser};
 };
 
-export {useMedia, useAuthentication, useUser};
+const useLike = () => {
+  /**
+   * Post like for a post.
+   *
+   * @param {JWTToken} token JWT token of user.
+   * @param {integer} id Id of post to like.
+   */
+  const postLike = async (token, id) => {
+    try {
+      const body = {
+        media_id: id,
+      };
+      const options = {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      };
+      const response = await fetchData(
+        import.meta.env.VITE_MEDIA_API + '/likes',
+        options,
+      );
+      console.log(response);
+      return true;
+    } catch (error) {
+      console.log('Error:', error);
+      return false;
+    }
+  };
+
+  /**
+   * Remove like from a post.
+   *
+   * @param {JWTToken} token JWT token of user.
+   * @param {integer} id Id of post.
+   */
+  const deleteLike = async (token, id) => {
+    try {
+      const options = {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: id,
+        }),
+      };
+      const response = await fetchData(
+        import.meta.env.VITE_MEDIA_API + '/likes/' + id,
+        options,
+      );
+      console.log(response);
+      return true;
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+
+  /**
+   * Get likes of specified post.
+   *
+   * @param {integer} id Id of post
+   */
+  const getLikeCountByMediaId = async (id) => {
+    try {
+      const response = await fetchData(
+        import.meta.env.VITE_MEDIA_API + '/likes/count/' + id,
+      );
+      // console.log(response);
+      return response;
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+
+  /**
+   * Get likes of user.
+   *
+   * @param {JWTToken} token JWT token of user.
+   */
+  const getLikesByUser = async (token, id) => {
+    try {
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await fetchData(
+        import.meta.env.VITE_MEDIA_API + '/likes/byuser/' + id,
+        options,
+      );
+      console.log('Likes of user:', response);
+      return response;
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+
+  return {
+    postLike,
+    deleteLike,
+    getLikeCountByMediaId,
+    getLikesByUser,
+  };
+};
+
+export {useMedia, useAuthentication, useUser, useLike};

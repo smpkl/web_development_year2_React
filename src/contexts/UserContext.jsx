@@ -1,15 +1,34 @@
 import {createContext, useState} from 'react';
-import {useAuthentication, useUser} from '../hooks/apiHooks';
+import {useAuthentication, useLike, useUser} from '../hooks/apiHooks';
 import {useNavigate, useLocation} from 'react-router';
 
 const UserContext = createContext(undefined);
 
 const UserProvider = ({children}) => {
   const [user, setUser] = useState(null);
+  const [likes, setLikes] = useState(null);
+  const {getLikesByUser} = useLike();
   const {postLogin} = useAuthentication();
   const {getUserByToken} = useUser();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const reloadUserLikes = async (usr = user) => {
+    try {
+      console.log('Fetching likes of user');
+      const token = localStorage.getItem('token');
+
+      if (token && usr) {
+        const likesResponse = await getLikesByUser(token, usr.user_id);
+        setLikes(likesResponse);
+      } else {
+        setLikes([]);
+        console.log('Cannot fetch likes. User or token not defined');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // login, logout and autologin functions are here instead of components
   const handleLogin = async (credentials) => {
@@ -33,8 +52,10 @@ const UserProvider = ({children}) => {
         console.log('Login failed: no token received');
         return false;
       }
+
       // set user to state
       setUser(user);
+      reloadUserLikes(user);
       // navigate to home
       navigate('/');
     } catch (e) {
@@ -53,6 +74,7 @@ const UserProvider = ({children}) => {
       }
       // set user to null
       setUser(null);
+      reloadUserLikes();
       // navigate to home or login page
       navigate('/');
     } catch (e) {
@@ -69,8 +91,10 @@ const UserProvider = ({children}) => {
       // if token exists, get user data from API
       if (token) {
         const result = await getUserByToken(token);
+
         // set user to state
         setUser(result);
+        reloadUserLikes(result);
         console.log('Autologin successful', result);
         // navigate to home
         navigate(location.pathname);
@@ -84,6 +108,8 @@ const UserProvider = ({children}) => {
 
   const value = {
     user,
+    likes,
+    reloadUserLikes,
     handleLogin,
     handleLogout,
     handleAutoLogin,
